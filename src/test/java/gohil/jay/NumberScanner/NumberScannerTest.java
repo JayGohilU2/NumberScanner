@@ -48,7 +48,7 @@ class NumberScannerTest {
         final List<String> numbers = unit.scan(file);
         assertThat(numbers, hasSize(3));
         assertThat(numbers.get(0), is("123456789"));
-        assertThat(numbers.get(1), is("ILL"));
+        assertThat(numbers.get(1), is("123456?89 ILL"));
         assertThat(numbers.get(2), is("123456789"));
     }
 
@@ -60,4 +60,13 @@ class NumberScannerTest {
         assertThat(numbers, hasSize(1));
         assertThat(numbers.get(0), is("000000000"));
     }
+
+    @Test
+    public void GIVEN_another_bad_file_THAT_processed_unsuccessfully() throws IOException {
+        final File file = new ClassPathResource("bad_numbers_file.txt").getFile();
+        final List<String> numbers = unit.scan(file);
+        assertThat(numbers, hasSize(1));
+        assertThat(numbers.get(0), is("?2?4??78? ILL"));
+    }
+
 }

@@ -12,6 +12,7 @@ import java.util.stream.IntStream;
 @Component
 class NumberScanner {
     private static final String ILLEGAL_SIGNATURE_RESPONSE = "ILL";
+    private static final String CORRUPT_DATA_REPLACEMENT = "?";
 
     private final DigitLookupService digitLookupService;
     private final FileParser fileParser;
@@ -35,14 +36,14 @@ class NumberScanner {
         IntStream.rangeClosed(1, EncodedNumber.NUM_DIGITS_IN_NUMBER).forEach(i->{
             final String digitSignature = encodedNumber.getDigitalSignature(i);
             final Optional<Integer> digit = digitLookupService.retrieveDigit(digitSignature);
-            digit.ifPresent(numberString::append);
+            digit.ifPresentOrElse(
+                    numberString::append,
+                    ()->numberString.append(CORRUPT_DATA_REPLACEMENT));
         });
 
-        if (numberString.length()<EncodedNumber.NUM_DIGITS_IN_NUMBER) {
-            return ILLEGAL_SIGNATURE_RESPONSE;
+        if (numberString.indexOf(CORRUPT_DATA_REPLACEMENT)!=-1) {
+            numberString.append(" " + ILLEGAL_SIGNATURE_RESPONSE);
         }
-        else {
-            return numberString.toString();
-        }
+        return numberString.toString();
     }
 }

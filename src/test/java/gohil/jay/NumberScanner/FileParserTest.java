@@ -42,25 +42,4 @@ class FileParserTest {
         assertThat(encodedNumber.getDigitalSignature(8), is(" _ |_||_|"));
         assertThat(encodedNumber.getDigitalSignature(9), is(" _ |_| _|"));
     }
-
-
-    @Test
-    public void WHEN_file_contains_illegal_characters_THAT_QUESTION_MARK_IS_SUBSTITUTED() throws IOException {
-        final File file = new ClassPathResource("bad_numbers_file.txt").getFile();
-        final List<EncodedNumber> encodedNumbers = unit.parseNumbers(new FileInputStream(file));
-
-        assertThat(encodedNumbers, hasSize(1));
-        final EncodedNumber encodedNumber = encodedNumbers.get(0);
-
-        assertThat(encodedNumber.getDigitalSignature(1), is("  ?  |  |"));
-        assertThat(encodedNumber.getDigitalSignature(2), is(" _  _||_ "));
-        assertThat(encodedNumber.getDigitalSignature(3), is(" _  _| ?|"));
-        assertThat(encodedNumber.getDigitalSignature(4), is("   |_|  |"));
-        assertThat(encodedNumber.getDigitalSignature(5), is(" ? |_  _|"));
-        assertThat(encodedNumber.getDigitalSignature(6), is(" _ |? |_|"));
-        assertThat(encodedNumber.getDigitalSignature(7), is(" _   |  |"));
-        assertThat(encodedNumber.getDigitalSignature(8), is(" _ |_||_|"));
-        assertThat(encodedNumber.getDigitalSignature(9), is(" _ |_| _?"));
-    }
-
 }

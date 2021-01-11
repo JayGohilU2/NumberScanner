@@ -15,26 +15,17 @@ import java.util.stream.IntStream;
 
 @Component
 class FileParser {
-    static final String CORRUPT_DATA_REPLACEMENT = "?";
 
     private static final int MAX_CHARS_IN_LINE = 27;
     private static final int NUM_LINES_PER_NUMBER = 3;
     private static final int NUM_CHARS_PER_NUMBER_LINE = 3;
 
-
-    private static final String CORRUPT_DATA_DETECTOR = "[^|_ ]";
-
     List<EncodedNumber> parseNumbers(final InputStream inputStream) {
         final List<String> lines = slurpFile(inputStream);
-        // Remove corrupt characters from file and replace with well-known "bad" value....
-        final List<String> cleanedLines = lines.stream()
-                .map(line->line.replaceAll(CORRUPT_DATA_DETECTOR, CORRUPT_DATA_REPLACEMENT))
-                .collect(Collectors.toList());
-
         final List<EncodedNumber> encodedNumbers = new ArrayList<>();
 
         final List<String> linesForNumber = new ArrayList(NUM_LINES_PER_NUMBER);
-        cleanedLines.forEach(line->{
+        lines.forEach(line->{
             if (!line.isBlank()) {
                 linesForNumber.add(line);
                 if (linesForNumber.size()==NUM_LINES_PER_NUMBER) {

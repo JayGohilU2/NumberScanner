@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static gohil.jay.NumberScanner.FileParser.CORRUPT_DATA_REPLACEMENT;
 
 @Component
 class DigitLookupService {
@@ -32,9 +31,6 @@ class DigitLookupService {
     }
 
     Optional<Integer> retrieveDigit(final String digitalSignature) {
-        if (digitalSignature.contains(CORRUPT_DATA_REPLACEMENT)) {
-            return Optional.empty();
-        }
         return Optional.ofNullable(digitalSignatureMap.get(digitalSignature));
     }
 }
